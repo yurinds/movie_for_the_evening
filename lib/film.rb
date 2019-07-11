@@ -23,6 +23,6 @@ class Film
   end
 
   def to_s
-    "#{@directors.join(', ')} - #{@title}(#{@year})"
+    "#{@directors.join(', ')} - #{@title} (#{@year})"
   end
 end
