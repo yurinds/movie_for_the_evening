@@ -39,12 +39,12 @@ class FilmCollection
     text += 'Фильм какого режиссера вы хотите сегодня посмотреть?'
   end
 
-  def find_director(user_input)
-    @directors[user_input - 1]
+  def find_director(index)
+    @directors[index]
   end
 
-  def find_film(user_input)
-    director = find_director(user_input)
+  def find_film(index)
+    director = find_director(index)
     return nil unless director
 
     films = @collection.select { |film| film.directors.include?(director) }
