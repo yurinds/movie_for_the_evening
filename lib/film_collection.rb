@@ -50,4 +50,29 @@ class FilmCollection
     films = @collection.select { |film| film.directors.include?(director) }
     films.sample
   end
+
+  def self.from_list
+    doc = Nokogiri::HTML(open('https://www.kinopoisk.ru/top/lists/1/'))
+    films = []
+    doc.css('table#itemList .news').each do |link|
+      en_title = link.css("span[style='color: #888; font-family: arial; font-size: 11px; display: block']").text.strip
+
+      year = en_title.split('(').last.split(')').first
+      title = link.css('.all').first.text.strip
+
+      film_info = link.css('.gray_text').first.text.split("\n")
+      film_info.map! { |item| item.strip.gsub(/\,|\(|\)|реж.|\./, '') }
+      film_info.reject!(&:empty?)
+
+      director = film_info[1]
+
+      films << Film.new(
+        title: title,
+        director: director,
+        year: year
+      )
+    end
+
+    new(films)
+  end
 end
