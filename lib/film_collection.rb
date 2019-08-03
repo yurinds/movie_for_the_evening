@@ -7,16 +7,21 @@ class FilmCollection
     @directors_range = get_directors_range
   end
 
-  def get_directors_range
-    (1..@directors.size)
+  def to_s
+    text = "Программа «Фильм на вечер»\n\n"
+
+    @directors.each.with_index(1) do |director, index|
+      text += "#{index}: #{director}\n"
+    end
+    text += 'Фильм какого режиссера вы хотите сегодня посмотреть?'
   end
 
-  def get_directors
-    all_directors = []
-    @collection.each do |film|
-      all_directors |= film.directors
-    end
-    all_directors
+  def find_film(index)
+    director = find_director(index)
+    return nil unless director
+
+    films = @collection.select { |film| film.directors.include?(director) }
+    films.sample
   end
 
   def self.from_dir(current_path)
@@ -28,27 +33,6 @@ class FilmCollection
       films << Film.from_file(full_path) if File.exist?(full_path)
     end
     new(films)
-  end
-
-  def to_s
-    text = "Программа «Фильм на вечер»\n\n"
-
-    @directors.each.with_index(1) do |director, index|
-      text += "#{index}: #{director}\n"
-    end
-    text += 'Фильм какого режиссера вы хотите сегодня посмотреть?'
-  end
-
-  def find_director(index)
-    @directors[index]
-  end
-
-  def find_film(index)
-    director = find_director(index)
-    return nil unless director
-
-    films = @collection.select { |film| film.directors.include?(director) }
-    films.sample
   end
 
   def self.from_list
@@ -74,5 +58,23 @@ class FilmCollection
     end
 
     new(films)
+  end
+
+  private
+
+  def get_directors_range
+    (1..@directors.size)
+  end
+
+  def find_director(index)
+    @directors[index]
+  end
+
+  def get_directors
+    all_directors = []
+    @collection.each do |film|
+      all_directors |= film.directors
+    end
+    all_directors
   end
 end
