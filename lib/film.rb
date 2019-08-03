@@ -7,11 +7,6 @@ class Film
     @year = params[:year]
   end
 
-  def get_directors(director_string)
-    directors_arry = director_string.split(/,/)
-    directors_arry.map(&:strip)
-  end
-
   def self.from_file(path)
     film = File.readlines(path, chomp: true)
 
@@ -24,5 +19,12 @@ class Film
 
   def to_s
     "#{@directors.join(', ')} - #{@title} (#{@year})"
+  end
+
+  private
+
+  def get_directors(director_string)
+    directors_arry = director_string.split(/,/)
+    directors_arry.map(&:strip)
   end
 end
