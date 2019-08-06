@@ -24,12 +24,12 @@ class FilmCollection
     films.sample
   end
 
-  def self.from_dir(current_path)
+  def self.from_dir(current_path, films_path = 'data/films')
     films = []
-    Dir.new('data/films').each do |dir_path|
+    Dir.new("#{current_path}/#{films_path}").each do |dir_path|
       next if ['.', '..'].include?(dir_path)
 
-      full_path = current_path + '/data/films/' + dir_path
+      full_path = current_path + "/#{films_path}/" + dir_path
       films << Film.from_file(full_path) if File.exist?(full_path)
     end
     new(films)

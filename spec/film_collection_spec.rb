@@ -1,5 +1,7 @@
 require 'film_collection'
 require 'film'
+require 'nokogiri'
+require 'open-uri'
 
 describe 'FilmCollection' do
   it 'assigns instance variables' do
@@ -33,6 +35,26 @@ describe 'FilmCollection' do
       films = FilmCollection.new([film_1, film_2, film_3])
 
       expect(films.find_film(4)).to eq nil
+    end
+  end
+
+  describe '#self.from_list' do
+    it 'shows that movies are read from the Internet' do
+      films = FilmCollection.from_list
+
+      expect(!films.collection.empty?).to eq true
+      expect(films.collection[0].class == Film).to eq true
+    end
+  end
+
+  describe '#self.from_dir' do
+    it 'shows that movies are read from the dir' do
+      current_path = File.dirname(__FILE__)
+
+      films = FilmCollection.from_dir(current_path, 'fixtures/films')
+
+      expect(!films.collection.empty?).to eq true
+      expect(films.collection[0].class == Film).to eq true
     end
   end
 end
