@@ -4,7 +4,9 @@
 
 Программа написана на Ruby.
 
-Для запуска склонируйте репозиторий и выполните в терминале:
+Для запуска выполните в терминале:
 ```
+git clone https://github.com/yurinds/movie_for_the_evening.git
+cd movie_for_the_evening
 ruby main.rb
 ```
