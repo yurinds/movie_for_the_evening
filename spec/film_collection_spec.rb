@@ -31,7 +31,7 @@ describe 'FilmCollection' do
     end
 
     it 'indicates a non-existing index' do
-      expect(@films.find_film(4)).to eq nil
+      expect(@films.find_film(4)).to be_falsy
     end
   end
 
@@ -45,6 +45,7 @@ describe 'FilmCollection' do
         expect(films_from_list.collection[1].title).to eq 'Зеленая миля'
         expect(films_from_list.collection[5].title).to eq 'Леон'
         expect(films_from_list.collection[10].title).to eq 'Жизнь прекрасна'
+        expect(films_from_list.collection.size).to eq 25
       end
     end
   end
@@ -52,11 +53,12 @@ describe 'FilmCollection' do
   describe '.from_dir' do
     it 'shows that movies are read from the dir' do
       current_path = File.dirname(__FILE__)
-
       films_from_dir = FilmCollection.from_dir(current_path, 'fixtures/films')
 
-      expect(!films_from_dir.collection.empty?).to eq true
-      expect(films_from_dir.collection[0].class == Film).to eq true
+      expect(films_from_dir.collection.empty?).to be_falsy
+      expect(films_from_dir.collection.size).to eq 2
+      expect(films_from_dir.collection.map(&:title)).to eq ['Зеленая миля', 'Форрест Гамп']
+      expect(films_from_dir.collection[2]).to be_falsy
     end
   end
 end
