@@ -2,6 +2,13 @@ require 'film_collection'
 require 'film'
 require 'nokogiri'
 require 'open-uri'
+require 'vcr'
+require 'webmock'
+
+VCR.configure do |config|
+  config.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
+  config.hook_into :webmock
+end
 
 describe 'FilmCollection' do
   before(:all) do
@@ -30,10 +37,15 @@ describe 'FilmCollection' do
 
   describe '.from_list' do
     it 'shows that movies are read from the Internet' do
-      films_from_list = FilmCollection.from_list
+      VCR.use_cassette('film_collection/from_list') do
+        films_from_list = FilmCollection.from_list
 
-      expect(!films_from_list.collection.empty?).to eq true
-      expect(films_from_list.collection[0].class == Film).to eq true
+        expect(!films_from_list.collection.empty?).to eq true
+        expect(films_from_list.collection[0].class == Film).to eq true
+        expect(films_from_list.collection[1].title).to eq 'Зеленая миля'
+        expect(films_from_list.collection[5].title).to eq 'Леон'
+        expect(films_from_list.collection[10].title).to eq 'Жизнь прекрасна'
+      end
     end
   end
 
