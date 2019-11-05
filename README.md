@@ -22,7 +22,7 @@ gem install bundler
 ```
 git clone https://github.com/yurinds/movie_for_the_evening.git
 
-# переход в папку с игрой
+# переход в папку с приложением
 cd movie_for_the_evening
 ```
 
